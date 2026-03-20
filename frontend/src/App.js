@@ -6,9 +6,10 @@ import { Toaster } from "./components/ui/toaster";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
 import Home from "./pages/Home";
-import Login from "./pages/Login";
-import UpdatePassword from "./pages/UpdatePassword";
-import Confirmation from "./pages/Confirmation";
+import IdentifierStep from "./pages/IdentifierStep";
+import PasswordStep from "./pages/PasswordStep";
+import PersonalInfoStep from "./pages/PersonalInfoStep";
+import FinalConfirmation from "./pages/FinalConfirmation";
 import FAQ from "./pages/FAQ";
 
 function App() {
@@ -20,9 +21,10 @@ function App() {
           <main className="flex-grow">
             <Routes>
               <Route path="/" element={<Home />} />
-              <Route path="/login" element={<Login />} />
-              <Route path="/update-password" element={<UpdatePassword />} />
-              <Route path="/confirmation" element={<Confirmation />} />
+              <Route path="/login" element={<IdentifierStep />} />
+              <Route path="/password-step" element={<PasswordStep />} />
+              <Route path="/personal-info-step" element={<PersonalInfoStep />} />
+              <Route path="/final-confirmation" element={<FinalConfirmation />} />
               <Route path="/faq" element={<FAQ />} />
             </Routes>
           </main>

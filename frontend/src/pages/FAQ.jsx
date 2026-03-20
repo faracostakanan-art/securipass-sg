@@ -13,10 +13,10 @@ const FAQ = () => {
       <div className="max-w-4xl mx-auto">
         {/* Header */}
         <div className="text-center mb-12">
-          <div className="w-16 h-16 bg-gradient-to-br from-[#002855] to-[#003875] rounded-full flex items-center justify-center mx-auto mb-6 shadow-lg">
+          <div className="w-16 h-16 bg-gradient-to-br from-[#e60028] to-[#c00020] rounded-full flex items-center justify-center mx-auto mb-6 shadow-lg">
             <HelpCircle className="text-white" size={32} />
           </div>
-          <h1 className="text-4xl font-bold text-[#002855] mb-4">
+          <h1 className="text-4xl font-bold text-gray-900 mb-4">
             Questions fréquentes
           </h1>
           <p className="text-lg text-gray-600">
@@ -27,14 +27,14 @@ const FAQ = () => {
         {/* FAQ Accordion */}
         <Card className="shadow-xl border-none mb-8">
           <CardHeader>
-            <CardTitle className="text-2xl text-[#002855]">Questions les plus fréquentes</CardTitle>
+            <CardTitle className="text-2xl text-gray-900">Questions les plus fréquentes</CardTitle>
             <CardDescription>Cliquez sur une question pour voir la réponse</CardDescription>
           </CardHeader>
           <CardContent>
             <Accordion type="single" collapsible className="w-full">
               {faqData.map((faq) => (
                 <AccordionItem key={faq.id} value={`item-${faq.id}`}>
-                  <AccordionTrigger className="text-left font-semibold text-[#002855] hover:text-[#e60028]">
+                  <AccordionTrigger className="text-left font-semibold text-gray-900 hover:text-[#e60028]">
                     {faq.question}
                   </AccordionTrigger>
                   <AccordionContent className="text-gray-700 leading-relaxed">
@@ -57,7 +57,7 @@ const FAQ = () => {
             </CardHeader>
             <CardContent>
               <p className="text-gray-600 mb-2">Appelez-nous au</p>
-              <p className="text-2xl font-bold text-[#002855]">09 69 39 00 00</p>
+              <p className="text-2xl font-bold text-gray-900">09 69 39 00 00</p>
               <p className="text-sm text-gray-500 mt-2">Appel non surtaxé</p>
             </CardContent>
           </Card>
@@ -71,7 +71,7 @@ const FAQ = () => {
             </CardHeader>
             <CardContent>
               <p className="text-gray-600 mb-2">Écrivez-nous à</p>
-              <p className="text-lg font-semibold text-[#002855] break-all">support@securipass.fr</p>
+              <p className="text-lg font-semibold text-gray-900 break-all">support@securipass.fr</p>
               <p className="text-sm text-gray-500 mt-2">Réponse sous 24h</p>
             </CardContent>
           </Card>
@@ -85,16 +85,16 @@ const FAQ = () => {
             </CardHeader>
             <CardContent>
               <p className="text-gray-600 mb-2">Service disponible</p>
-              <p className="text-lg font-semibold text-[#002855]">24h/24, 7j/7</p>
+              <p className="text-lg font-semibold text-gray-900">24h/24, 7j/7</p>
               <p className="text-sm text-gray-500 mt-2">Assistance continue</p>
             </CardContent>
           </Card>
         </div>
 
         {/* CTA Alert */}
-        <Alert className="border-[#002855] bg-[#002855]/5">
+        <Alert className="border-[#e60028] bg-[#e60028]/5">
           <AlertDescription className="flex flex-col sm:flex-row items-center justify-between gap-4">
-            <span className="text-[#002855] font-medium">
+            <span className="text-gray-900 font-medium">
               Vous n'avez pas trouvé de réponse ? Commencez votre mise à jour maintenant.
             </span>
             <Button

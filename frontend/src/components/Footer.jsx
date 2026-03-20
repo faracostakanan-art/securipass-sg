@@ -6,7 +6,7 @@ const Footer = () => {
   const currentYear = new Date().getFullYear();
 
   return (
-    <footer className="bg-[#001a3d] text-white mt-20">
+    <footer className="bg-[#c00020] text-white mt-20">
       <div className="max-w-7xl mx-auto px-4 py-12">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
           {/* About */}
@@ -25,17 +25,17 @@ const Footer = () => {
             <h4 className="font-semibold mb-4 text-white">Liens rapides</h4>
             <ul className="space-y-2">
               <li>
-                <Link to="/" className="text-gray-300 hover:text-[#e60028] transition-colors text-sm">
+                <Link to="/" className="text-red-100 hover:text-white transition-colors text-sm">
                   Accueil
                 </Link>
               </li>
               <li>
-                <Link to="/login" className="text-gray-300 hover:text-[#e60028] transition-colors text-sm">
+                <Link to="/login" className="text-red-100 hover:text-white transition-colors text-sm">
                   Mettre à jour mon Securipass
                 </Link>
               </li>
               <li>
-                <Link to="/faq" className="text-gray-300 hover:text-[#e60028] transition-colors text-sm">
+                <Link to="/faq" className="text-red-100 hover:text-white transition-colors text-sm">
                   Questions fréquentes
                 </Link>
               </li>

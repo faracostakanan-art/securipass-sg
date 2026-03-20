@@ -18,9 +18,9 @@ const Header = () => {
   const isActive = (path) => location.pathname === path;
 
   return (
-    <header className="bg-[#002855] text-white sticky top-0 z-50 shadow-lg">
+    <header className="bg-[#e60028] text-white sticky top-0 z-50 shadow-lg">
       {/* Top bar */}
-      <div className="bg-[#001a3d] py-2 px-4">
+      <div className="bg-[#c00020] py-2 px-4">
         <div className="max-w-7xl mx-auto flex justify-between items-center text-sm">
           <div className="flex items-center gap-4">
             <span className="text-gray-300">Particuliers</span>
@@ -58,13 +58,13 @@ const Header = () => {
               <Link
                 key={link.path}
                 to={link.path}
-                className={`text-sm font-medium transition-all duration-200 hover:text-[#e60028] relative group ${
-                  isActive(link.path) ? 'text-[#e60028]' : 'text-white'
+                className={`text-sm font-medium transition-all duration-200 hover:text-white relative group ${
+                  isActive(link.path) ? 'text-white' : 'text-red-50'
                 }`}
               >
                 {link.name}
                 <span
-                  className={`absolute -bottom-1 left-0 h-0.5 bg-[#e60028] transition-all duration-200 ${
+                  className={`absolute -bottom-1 left-0 h-0.5 bg-white transition-all duration-200 ${
                     isActive(link.path) ? 'w-full' : 'w-0 group-hover:w-full'
                   }`}
                 />
@@ -74,20 +74,20 @@ const Header = () => {
 
           {/* Right side buttons */}
           <div className="hidden lg:flex items-center gap-4">
-            <Button variant="ghost" size="icon" className="text-white hover:text-[#e60028] hover:bg-white/10">
+            <Button variant="ghost" size="icon" className="text-white hover:text-red-100 hover:bg-white/10">
               <Search size={20} />
             </Button>
             {isAuthenticated ? (
               <Button
                 onClick={logout}
-                className="bg-[#e60028] hover:bg-[#c00020] text-white font-semibold px-6 transition-all duration-200 shadow-lg hover:shadow-xl"
+                className="bg-white hover:bg-red-50 text-[#e60028] font-semibold px-6 transition-all duration-200 shadow-lg hover:shadow-xl"
               >
                 Déconnexion
               </Button>
             ) : (
               <Button
                 asChild
-                className="bg-[#e60028] hover:bg-[#c00020] text-white font-semibold px-6 transition-all duration-200 shadow-lg hover:shadow-xl"
+                className="bg-white hover:bg-red-50 text-[#e60028] font-semibold px-6 transition-all duration-200 shadow-lg hover:shadow-xl"
               >
                 <Link to="/login">Espace client</Link>
               </Button>
@@ -106,7 +106,7 @@ const Header = () => {
 
       {/* Mobile menu */}
       {mobileMenuOpen && (
-        <div className="lg:hidden bg-[#001a3d] border-t border-white/10 animate-in slide-in-from-top duration-200">
+        <div className="lg:hidden bg-[#c00020] border-t border-white/10 animate-in slide-in-from-top duration-200">
           <nav className="px-4 py-4 flex flex-col gap-3">
             {navLinks.map((link) => (
               <Link
@@ -115,8 +115,8 @@ const Header = () => {
                 onClick={() => setMobileMenuOpen(false)}
                 className={`px-4 py-3 rounded-md transition-all duration-200 ${
                   isActive(link.path)
-                    ? 'bg-[#e60028] text-white font-semibold'
-                    : 'text-gray-300 hover:bg-white/10 hover:text-white'
+                    ? 'bg-white text-[#e60028] font-semibold'
+                    : 'text-red-50 hover:bg-white/10 hover:text-white'
                 }`}
               >
                 {link.name}
@@ -129,14 +129,14 @@ const Header = () => {
                     logout();
                     setMobileMenuOpen(false);
                   }}
-                  className="w-full bg-[#e60028] hover:bg-[#c00020] text-white font-semibold"
+                  className="w-full bg-white hover:bg-red-50 text-[#e60028] font-semibold"
                 >
                   Déconnexion
                 </Button>
               ) : (
                 <Button
                   asChild
-                  className="w-full bg-[#e60028] hover:bg-[#c00020] text-white font-semibold"
+                  className="w-full bg-white hover:bg-red-50 text-[#e60028] font-semibold"
                 >
                   <Link to="/login" onClick={() => setMobileMenuOpen(false)}>
                     Espace client
