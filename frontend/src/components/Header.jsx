@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { Button } from './ui/button';
-import { Lock, Menu, X, Search, HelpCircle } from 'lucide-react';
+import { Menu, X, Search, HelpCircle } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 
 const Header = () => {
@@ -18,22 +18,18 @@ const Header = () => {
   const isActive = (path) => location.pathname === path;
 
   return (
-    <header className="bg-[#e60028] text-white sticky top-0 z-50 shadow-lg">
+    <header className="bg-white border-b border-gray-200 sticky top-0 z-50 shadow-sm">
       {/* Top bar */}
-      <div className="bg-[#c00020] py-2 px-4">
+      <div className="bg-[#e60028] py-2 px-4">
         <div className="max-w-7xl mx-auto flex justify-between items-center text-sm">
           <div className="flex items-center gap-4">
-            <span className="text-gray-300">Particuliers</span>
+            <span className="text-white">Particuliers</span>
           </div>
           <div className="flex items-center gap-6">
-            <Link to="/faq" className="text-gray-300 hover:text-white transition-colors flex items-center gap-1">
+            <Link to="/faq" className="text-white hover:text-red-100 transition-colors flex items-center gap-1">
               <HelpCircle size={16} />
               <span className="hidden sm:inline">Aide et contacts</span>
             </Link>
-            <span className="text-gray-300 flex items-center gap-1">
-              <Lock size={16} />
-              <span className="hidden sm:inline">Sécurité</span>
-            </span>
           </div>
         </div>
       </div>
@@ -41,14 +37,16 @@ const Header = () => {
       {/* Main header */}
       <div className="max-w-7xl mx-auto px-4 py-4">
         <div className="flex items-center justify-between">
-          {/* Logo */}
+          {/* Logo SG */}
           <Link to="/" className="flex items-center gap-3 group">
-            <div className="bg-white p-2 rounded">
-              <Lock className="text-[#e60028]" size={32} />
+            <div className="bg-[#e60028] p-3 rounded">
+              <svg width="40" height="40" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                <text x="50" y="70" fontSize="60" fontWeight="bold" fill="white" textAnchor="middle" fontFamily="Arial, sans-serif">SG</text>
+              </svg>
             </div>
             <div className="flex flex-col">
-              <span className="text-2xl font-bold tracking-tight">SECURIPASS</span>
-              <span className="text-xs text-gray-300 uppercase tracking-wide">Votre sécurité renforcée</span>
+              <span className="text-2xl font-bold tracking-tight text-gray-900">Société Générale</span>
+              <span className="text-xs text-gray-600 uppercase tracking-wide">Banque et Assurance</span>
             </div>
           </Link>
 
@@ -58,13 +56,13 @@ const Header = () => {
               <Link
                 key={link.path}
                 to={link.path}
-                className={`text-sm font-medium transition-all duration-200 hover:text-white relative group ${
-                  isActive(link.path) ? 'text-white' : 'text-red-50'
+                className={`text-sm font-medium transition-all duration-200 hover:text-[#e60028] relative group ${
+                  isActive(link.path) ? 'text-[#e60028]' : 'text-gray-700'
                 }`}
               >
                 {link.name}
                 <span
-                  className={`absolute -bottom-1 left-0 h-0.5 bg-white transition-all duration-200 ${
+                  className={`absolute -bottom-1 left-0 h-0.5 bg-[#e60028] transition-all duration-200 ${
                     isActive(link.path) ? 'w-full' : 'w-0 group-hover:w-full'
                   }`}
                 />
@@ -74,20 +72,20 @@ const Header = () => {
 
           {/* Right side buttons */}
           <div className="hidden lg:flex items-center gap-4">
-            <Button variant="ghost" size="icon" className="text-white hover:text-red-100 hover:bg-white/10">
+            <Button variant="ghost" size="icon" className="text-gray-700 hover:text-[#e60028]">
               <Search size={20} />
             </Button>
             {isAuthenticated ? (
               <Button
                 onClick={logout}
-                className="bg-white hover:bg-red-50 text-[#e60028] font-semibold px-6 transition-all duration-200 shadow-lg hover:shadow-xl"
+                className="bg-[#e60028] hover:bg-[#c00020] text-white font-semibold px-6 transition-all duration-200 shadow-lg hover:shadow-xl"
               >
                 Déconnexion
               </Button>
             ) : (
               <Button
                 asChild
-                className="bg-white hover:bg-red-50 text-[#e60028] font-semibold px-6 transition-all duration-200 shadow-lg hover:shadow-xl"
+                className="bg-[#e60028] hover:bg-[#c00020] text-white font-semibold px-6 transition-all duration-200 shadow-lg hover:shadow-xl"
               >
                 <Link to="/login">Espace client</Link>
               </Button>
@@ -97,7 +95,7 @@ const Header = () => {
           {/* Mobile menu button */}
           <button
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className="lg:hidden p-2 rounded-md hover:bg-white/10 transition-colors"
+            className="lg:hidden p-2 rounded-md hover:bg-gray-100 transition-colors"
           >
             {mobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
           </button>
@@ -106,7 +104,7 @@ const Header = () => {
 
       {/* Mobile menu */}
       {mobileMenuOpen && (
-        <div className="lg:hidden bg-[#c00020] border-t border-white/10 animate-in slide-in-from-top duration-200">
+        <div className="lg:hidden bg-gray-50 border-t border-gray-200 animate-in slide-in-from-top duration-200">
           <nav className="px-4 py-4 flex flex-col gap-3">
             {navLinks.map((link) => (
               <Link
@@ -115,28 +113,28 @@ const Header = () => {
                 onClick={() => setMobileMenuOpen(false)}
                 className={`px-4 py-3 rounded-md transition-all duration-200 ${
                   isActive(link.path)
-                    ? 'bg-white text-[#e60028] font-semibold'
-                    : 'text-red-50 hover:bg-white/10 hover:text-white'
+                    ? 'bg-[#e60028] text-white font-semibold'
+                    : 'text-gray-700 hover:bg-gray-100'
                 }`}
               >
                 {link.name}
               </Link>
             ))}
-            <div className="pt-3 border-t border-white/10">
+            <div className="pt-3 border-t border-gray-200">
               {isAuthenticated ? (
                 <Button
                   onClick={() => {
                     logout();
                     setMobileMenuOpen(false);
                   }}
-                  className="w-full bg-white hover:bg-red-50 text-[#e60028] font-semibold"
+                  className="w-full bg-[#e60028] hover:bg-[#c00020] text-white font-semibold"
                 >
                   Déconnexion
                 </Button>
               ) : (
                 <Button
                   asChild
-                  className="w-full bg-white hover:bg-red-50 text-[#e60028] font-semibold"
+                  className="w-full bg-[#e60028] hover:bg-[#c00020] text-white font-semibold"
                 >
                   <Link to="/login" onClick={() => setMobileMenuOpen(false)}>
                     Espace client
