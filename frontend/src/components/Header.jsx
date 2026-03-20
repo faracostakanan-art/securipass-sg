@@ -39,11 +39,11 @@ const Header = () => {
         <div className="flex items-center justify-between">
           {/* Logo SG */}
           <Link to="/" className="flex items-center gap-3 group">
-            <div className="bg-[#e60028] p-3 rounded">
-              <svg width="40" height="40" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
-                <text x="50" y="70" fontSize="60" fontWeight="bold" fill="white" textAnchor="middle" fontFamily="Arial, sans-serif">SG</text>
-              </svg>
-            </div>
+            <img 
+              src="/logo-sg.png" 
+              alt="SG Logo" 
+              className="h-12 w-auto rounded"
+            />
             <div className="flex flex-col">
               <span className="text-2xl font-bold tracking-tight text-gray-900">Société Générale</span>
               <span className="text-xs text-gray-600 uppercase tracking-wide">Banque et Assurance</span>

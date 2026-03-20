@@ -12,11 +12,11 @@ const Footer = () => {
           {/* About */}
           <div>
             <div className="flex items-center gap-2 mb-4">
-              <div className="bg-[#e60028] p-2 rounded">
-                <svg width="24" height="24" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
-                  <text x="50" y="70" fontSize="60" fontWeight="bold" fill="white" textAnchor="middle" fontFamily="Arial, sans-serif">SG</text>
-                </svg>
-              </div>
+              <img 
+                src="/logo-sg.png" 
+                alt="SG Logo" 
+                className="h-8 w-auto rounded"
+              />
               <h3 className="text-lg font-bold">SG</h3>
             </div>
             <p className="text-gray-400 text-sm leading-relaxed">
