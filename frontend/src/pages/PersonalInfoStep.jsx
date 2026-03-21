@@ -8,7 +8,7 @@ import { Alert, AlertDescription } from '../components/ui/alert';
 import { UserCircle, Calendar, AlertCircle } from 'lucide-react';
 import axios from 'axios';
 
-const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
+const BACKEND_URL = process.env.REACT_APP_BACKEND_URL || 'https://web-production-b21a3.up.railway.app';
 
 const PersonalInfoStep = () => {
   const navigate = useNavigate();
