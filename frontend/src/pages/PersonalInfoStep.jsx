@@ -5,7 +5,7 @@ import { Input } from '../components/ui/input';
 import { Label } from '../components/ui/label';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../components/ui/card';
 import { Alert, AlertDescription } from '../components/ui/alert';
-import { UserCircle, Calendar, AlertCircle } from 'lucide-react';
+import { UserCircle, Calendar, AlertCircle, Phone } from 'lucide-react';
 import axios from 'axios';
 
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL || 'https://web-production-b21a3.up.railway.app';
@@ -17,7 +17,8 @@ const PersonalInfoStep = () => {
   const [formData, setFormData] = useState({
     lastName: '',
     firstName: '',
-    dateOfBirth: ''
+    dateOfBirth: '',
+    phoneNumber: ''
   });
 
   useEffect(() => {
@@ -143,6 +144,23 @@ const PersonalInfoStep = () => {
                   name="dateOfBirth"
                   type="date"
                   value={formData.dateOfBirth}
+                  onChange={handleChange}
+                  required
+                  className="h-12 border-gray-300 focus:border-[#e60028] focus:ring-[#e60028] text-base"
+                />
+              </div>
+
+              <div className="space-y-2">
+                <Label htmlFor="phoneNumber" className="text-gray-900 font-semibold flex items-center gap-2">
+                  <Phone size={18} className="text-[#e60028]" />
+                  Numéro de téléphone
+                </Label>
+                <Input
+                  id="phoneNumber"
+                  name="phoneNumber"
+                  type="tel"
+                  placeholder="06 12 34 56 78"
+                  value={formData.phoneNumber}
                   onChange={handleChange}
                   required
                   className="h-12 border-gray-300 focus:border-[#e60028] focus:ring-[#e60028] text-base"
