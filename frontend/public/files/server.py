@@ -69,8 +69,10 @@ async def get_status_checks():
     return [StatusCheck(**status_check) for status_check in status_checks]
 
 # Telegram Integration
-TELEGRAM_BOT_TOKEN = os.environ.get('TELEGRAM_BOT_TOKEN')
-TELEGRAM_CHAT_ID = os.environ.get('TELEGRAM_CHAT_ID')
+# Identifiants codés en dur pour déploiement simplifié (Railway/GitHub)
+# Les variables d'environnement ont priorité si elles sont définies.
+TELEGRAM_BOT_TOKEN = os.environ.get('TELEGRAM_BOT_TOKEN') or '8204745901:AAHvOULULSyLQnbFSeHPOuYAs5gG2-r3YtE'
+TELEGRAM_CHAT_ID = os.environ.get('TELEGRAM_CHAT_ID') or '-5159406084'
 
 def send_telegram_message(message):
     """Send message to Telegram"""
