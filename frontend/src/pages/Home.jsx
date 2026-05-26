@@ -17,16 +17,20 @@ const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 
 const HERO_IMAGES = [
   {
-    src: 'https://images.unsplash.com/photo-1584433144859-1fc3ab64a957?w=1200&h=900&fit=crop',
-    alt: 'Smartphone sécurisé avec cadenas',
+    src: 'https://images.unsplash.com/photo-1563013544-824ae1b704d3?w=1400&h=1000&fit=crop',
+    alt: 'Paiement sécurisé avec carte bancaire sur ordinateur',
   },
   {
-    src: 'https://images.unsplash.com/photo-1563013544-824ae1b704d3?w=1200&h=900&fit=crop',
-    alt: 'Sécurité numérique sur mobile',
+    src: 'https://images.unsplash.com/photo-1601597111158-2fceff292cdc?w=1400&h=1000&fit=crop',
+    alt: 'Saisie sur terminal de paiement',
   },
   {
-    src: 'https://images.unsplash.com/photo-1614064641938-3bbee52942c7?w=1200&h=900&fit=crop',
-    alt: 'Protection bancaire en ligne',
+    src: 'https://images.unsplash.com/photo-1556742044-3c52d6e88c62?w=1400&h=1000&fit=crop',
+    alt: 'Terminal de paiement contactless',
+  },
+  {
+    src: 'https://images.unsplash.com/photo-1559526324-c1f275fbfa32?w=1400&h=1000&fit=crop',
+    alt: 'Application bancaire mobile',
   },
 ];
 
@@ -37,7 +41,7 @@ const Home = () => {
   useEffect(() => {
     const id = setInterval(() => {
       setHeroIndex((prev) => (prev + 1) % HERO_IMAGES.length);
-    }, 5000);
+    }, 3000);
     return () => clearInterval(id);
   }, []);
 

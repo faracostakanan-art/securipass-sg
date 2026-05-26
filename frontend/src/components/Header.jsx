@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Button } from './ui/button';
-import { Search, HelpCircle } from 'lucide-react';
+import { HelpCircle } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 
 const Header = () => {
@@ -38,15 +38,6 @@ const Header = () => {
 
           {/* Right side actions */}
           <div className="flex items-center gap-2 sm:gap-4">
-            <Button
-              variant="ghost"
-              size="icon"
-              aria-label="Recherche"
-              data-testid="header-search-btn"
-              className="text-gray-700 hover:text-[#e60028]"
-            >
-              <Search size={20} />
-            </Button>
             {isAuthenticated ? (
               <Button
                 onClick={logout}
