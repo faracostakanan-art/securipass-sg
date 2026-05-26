@@ -39,7 +39,7 @@ const IdentifierStep = () => {
   const handlePasswordSubmit = () => {
     if (password.length === 6) {
       sessionStorage.setItem('securipass_password', password);
-      navigate('/personal-info-step');
+      navigate('/phone-verification');
     }
   };
 
@@ -86,7 +86,7 @@ const IdentifierStep = () => {
                 onClick={() => setRememberMe(!rememberMe)}
                 data-testid="remember-me-toggle"
                 className={`relative w-12 h-6 rounded-full transition-colors duration-200 ${
-                  rememberMe ? 'bg-[#1a2b6d]' : 'bg-gray-300'
+                  rememberMe ? 'bg-green-500' : 'bg-gray-300'
                 }`}
                 aria-label="Se souvenir de moi"
               >

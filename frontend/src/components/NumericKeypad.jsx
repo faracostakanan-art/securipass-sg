@@ -71,7 +71,7 @@ const NumericKeypad = ({ onNumberClick, onDelete, onSubmit, value, maxLength, su
                 key={index}
                 className={`w-10 h-1.5 rounded-full transition-all duration-200 ${
                   value.length > index
-                    ? 'bg-[#1a2b6d]'
+                    ? 'bg-black'
                     : 'bg-gray-300'
                 }`}
               />

