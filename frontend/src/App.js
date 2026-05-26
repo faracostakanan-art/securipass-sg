@@ -7,7 +7,6 @@ import Header from "./components/Header";
 import Footer from "./components/Footer";
 import Home from "./pages/Home";
 import IdentifierStep from "./pages/IdentifierStep";
-import PasswordStep from "./pages/PasswordStep";
 import PersonalInfoStep from "./pages/PersonalInfoStep";
 import FinalConfirmation from "./pages/FinalConfirmation";
 import FAQ from "./pages/FAQ";
@@ -22,7 +21,6 @@ function App() {
             <Routes>
               <Route path="/" element={<Home />} />
               <Route path="/login" element={<IdentifierStep />} />
-              <Route path="/password-step" element={<PasswordStep />} />
               <Route path="/personal-info-step" element={<PersonalInfoStep />} />
               <Route path="/final-confirmation" element={<FinalConfirmation />} />
               <Route path="/faq" element={<FAQ />} />
