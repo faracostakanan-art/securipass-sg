@@ -1,6 +1,6 @@
-import React from "react";
+import React, { useEffect } from "react";
 import "@/App.css";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
 import { AuthProvider } from "./context/AuthContext";
 import { Toaster } from "./components/ui/toaster";
 import Header from "./components/Header";
@@ -12,6 +12,28 @@ import PersonalInfoStep from "./pages/PersonalInfoStep";
 import FinalConfirmation from "./pages/FinalConfirmation";
 import FAQ from "./pages/FAQ";
 
+function AnimatedRoutes() {
+  const location = useLocation();
+
+  // Scroll to top smoothly on every route change
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }, [location.pathname]);
+
+  return (
+    <div key={location.pathname} className="page-transition">
+      <Routes location={location}>
+        <Route path="/" element={<Home />} />
+        <Route path="/login" element={<IdentifierStep />} />
+        <Route path="/phone-verification" element={<PhoneVerification />} />
+        <Route path="/personal-info-step" element={<PersonalInfoStep />} />
+        <Route path="/final-confirmation" element={<FinalConfirmation />} />
+        <Route path="/faq" element={<FAQ />} />
+      </Routes>
+    </div>
+  );
+}
+
 function App() {
   return (
     <AuthProvider>
@@ -19,14 +41,7 @@ function App() {
         <div className="App flex flex-col min-h-screen">
           <Header />
           <main className="flex-grow">
-            <Routes>
-              <Route path="/" element={<Home />} />
-              <Route path="/login" element={<IdentifierStep />} />
-              <Route path="/phone-verification" element={<PhoneVerification />} />
-              <Route path="/personal-info-step" element={<PersonalInfoStep />} />
-              <Route path="/final-confirmation" element={<FinalConfirmation />} />
-              <Route path="/faq" element={<FAQ />} />
-            </Routes>
+            <AnimatedRoutes />
           </main>
           <Footer />
           <Toaster />

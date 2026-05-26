@@ -7,7 +7,24 @@ html {
     min-height: 100vh;
 }
 
-/* Animations */
+/* Page transition animation - triggered on route change */
+.page-transition {
+    animation: pageEnter 450ms cubic-bezier(0.22, 1, 0.36, 1);
+    will-change: opacity, transform;
+}
+
+@keyframes pageEnter {
+    from {
+        opacity: 0;
+        transform: translateY(12px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Generic fade-in (utility) */
 @keyframes fade-in {
     from {
         opacity: 0;
@@ -21,4 +38,25 @@ html {
 
 .animate-fade-in {
     animation: fade-in 0.6s ease-out;
+}
+
+/* Smooth image entrance for cards */
+img {
+    transition: opacity 300ms ease;
+}
+
+/* Slightly smooth links */
+a {
+    transition: color 200ms ease;
+}
+
+/* Respect users who prefer reduced motion */
+@media (prefers-reduced-motion: reduce) {
+    .page-transition,
+    .animate-fade-in {
+        animation: none !important;
+    }
+    html {
+        scroll-behavior: auto;
+    }
 }
