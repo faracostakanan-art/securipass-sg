@@ -1,8 +1,18 @@
 import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Button } from '../components/ui/button';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../components/ui/card';
-import { ShieldCheck, Smartphone, Eye, Bell, LockKeyhole, MousePointerClick, Headset, ArrowRight, AlertTriangle } from 'lucide-react';
+import {
+  ShieldCheck,
+  Smartphone,
+  Eye,
+  Bell,
+  LockKeyhole,
+  MousePointerClick,
+  Headset,
+  ArrowRight,
+  AlertTriangle,
+  Clock,
+} from 'lucide-react';
 import { securityFeatures, advantagesData } from '../mock';
 
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
@@ -12,18 +22,17 @@ const Home = () => {
 
   const iconMap = {
     'shield-check': ShieldCheck,
-    'smartphone': Smartphone,
-    'eye': Eye,
-    'bell': Bell,
+    smartphone: Smartphone,
+    eye: Eye,
+    bell: Bell,
     'lock-keyhole': LockKeyhole,
     'mouse-pointer-click': MousePointerClick,
-    'headset': Headset
+    headset: Headset,
   };
 
   const handleUpdateClick = async (e, source) => {
     e.preventDefault();
     try {
-      // Fire-and-forget notification; do not block navigation
       fetch(`${BACKEND_URL}/api/securipass/notify-visit`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -40,34 +49,35 @@ const Home = () => {
   };
 
   return (
-    <div className="min-h-screen bg-white">
-      {/* Hero Section */}
-      <section className="relative bg-white overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-br from-red-50 to-white opacity-50"></div>
-        
-        <div className="relative max-w-7xl mx-auto px-4 py-12 sm:py-16 lg:py-32">
-          <div className="grid lg:grid-cols-2 gap-8 sm:gap-12 items-center">
-            <div className="space-y-4 sm:space-y-6">
-              <div className="inline-block">
-                <span className="bg-[#e60028] text-white px-3 sm:px-4 py-1.5 sm:py-2 rounded-full text-xs sm:text-sm font-semibold uppercase tracking-wide">
-                  Mise à jour obligatoire
-                </span>
-              </div>
-              <h1 className="text-3xl sm:text-4xl lg:text-6xl font-bold leading-tight text-gray-900">
-                Renforcez la sécurité de votre compte
+    <div className="bg-white">
+      {/* HERO — burgundy banner with image */}
+      <section className="relative overflow-hidden">
+        <div className="grid grid-cols-1 lg:grid-cols-2">
+          {/* Left dark burgundy panel */}
+          <div
+            className="relative px-5 sm:px-10 lg:px-16 py-12 sm:py-16 lg:py-24"
+            style={{ backgroundColor: '#3A1018' }}
+          >
+            <div className="max-w-xl mx-auto lg:mx-0">
+              <span className="inline-block bg-[#e60028] text-white px-3 py-1.5 rounded-full text-xs font-semibold uppercase tracking-wider mb-5">
+                Mise à jour Secur'Pass
+              </span>
+              <h1 className="text-3xl sm:text-4xl lg:text-5xl xl:text-6xl font-bold leading-[1.1] text-white tracking-tight">
+                SG, une banque qui protège votre quotidien&nbsp;: mettez à jour votre Secur'Pass.
               </h1>
-              <p className="text-base sm:text-lg lg:text-xl text-gray-600 leading-relaxed">
-                Mettez à jour votre Secur'Pass dès maintenant pour bénéficier d'une protection maximale contre les cybermenaces.
+              <p className="mt-5 sm:mt-6 text-base sm:text-lg text-white/80 leading-relaxed">
+                Pour continuer à accéder à votre Espace Client en toute sérénité,
+                renforcez la sécurité de votre compte en quelques minutes.
               </p>
-              <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 pt-2 sm:pt-4">
+              <div className="mt-7 sm:mt-8 flex flex-col sm:flex-row gap-3 sm:gap-4">
                 <Button
                   asChild
                   size="lg"
-                  className="bg-[#e60028] hover:bg-[#c00020] text-white font-semibold px-6 sm:px-8 py-5 sm:py-6 text-base sm:text-lg shadow-xl hover:shadow-2xl transition-all duration-300 hover:scale-105"
+                  data-testid="hero-update-btn"
+                  className="bg-[#e60028] hover:bg-[#c00020] text-white font-semibold px-7 py-6 text-base sm:text-lg shadow-xl hover:shadow-2xl transition-all duration-300"
                 >
                   <Link
                     to="/login"
-                    data-testid="update-now-btn"
                     onClick={(e) => handleUpdateClick(e, 'hero_update_now')}
                   >
                     Mettre à jour maintenant
@@ -78,45 +88,101 @@ const Home = () => {
                   asChild
                   size="lg"
                   variant="outline"
-                  className="border-2 border-gray-300 text-gray-700 hover:bg-gray-100 font-semibold px-6 sm:px-8 py-5 sm:py-6 text-base sm:text-lg transition-all duration-300"
+                  className="bg-transparent border-2 border-white/40 text-white hover:bg-white/10 hover:text-white font-semibold px-7 py-6 text-base sm:text-lg transition-all duration-300"
                 >
                   <Link to="/faq">En savoir plus</Link>
                 </Button>
               </div>
             </div>
-            <div className="relative mt-4 lg:mt-0">
-              <div className="relative z-10">
-                <img 
-                  src="https://images.unsplash.com/photo-1584433144859-1fc3ab64a957?w=600&h=800&fit=crop" 
-                  alt="Smartphone sécurisé" 
-                  className="rounded-2xl shadow-2xl w-full max-w-xs sm:max-w-md mx-auto transform hover:scale-105 transition-transform duration-300"
-                />
-              </div>
-              <div className="absolute -bottom-4 -right-2 sm:-bottom-6 sm:-right-6 bg-white rounded-2xl p-4 sm:p-6 border-2 border-[#e60028] shadow-2xl max-w-[240px] sm:max-w-xs">
-                <div className="flex items-start gap-3 sm:gap-4">
-                  <div className="bg-[#e60028] p-2 sm:p-3 rounded-lg flex-shrink-0">
-                    <AlertTriangle className="text-white" size={20} />
-                  </div>
-                  <div>
-                    <h3 className="text-sm sm:text-lg font-bold mb-0.5 sm:mb-1 text-gray-900">Action requise</h3>
-                    <p className="text-gray-600 text-xs sm:text-sm">Date limite : 31 décembre 2025</p>
-                  </div>
-                </div>
-              </div>
-            </div>
+          </div>
+
+          {/* Right image panel */}
+          <div className="relative min-h-[260px] sm:min-h-[340px] lg:min-h-0 bg-[#3A1018]">
+            <img
+              src="https://images.unsplash.com/photo-1584433144859-1fc3ab64a957?w=1200&h=900&fit=crop"
+              alt="Sécurité bancaire mobile"
+              className="absolute inset-0 w-full h-full object-cover"
+            />
           </div>
         </div>
       </section>
 
-      {/* Why Update Section */}
+      {/* TWO PROMO CARDS */}
+      <section className="max-w-7xl mx-auto px-4 py-10 sm:py-14 lg:py-16">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
+          {/* Card 1 — purple gradient */}
+          <Link
+            to="/login"
+            onClick={(e) => handleUpdateClick(e, 'card_obligatoire')}
+            data-testid="promo-card-1"
+            className="group relative overflow-hidden rounded-2xl min-h-[200px] sm:min-h-[240px] shadow-lg hover:shadow-2xl transition-all duration-300"
+            style={{
+              background:
+                'linear-gradient(120deg, #f07a3a 0%, #e0457b 55%, #7a3aa3 100%)',
+            }}
+          >
+            <div className="absolute inset-0 p-5 sm:p-7 flex flex-col justify-between text-white">
+              <div>
+                <span className="inline-block bg-white/20 backdrop-blur text-white px-3 py-1 rounded-full text-[11px] font-semibold uppercase tracking-wider mb-3">
+                  Mise à jour obligatoire
+                </span>
+                <h3 className="text-xl sm:text-2xl lg:text-3xl font-bold leading-snug max-w-sm">
+                  Votre Secur'Pass arrive bientôt à échéance&nbsp;? Renforcez-le dès aujourd'hui&nbsp;!
+                </h3>
+              </div>
+              <div className="mt-4 flex items-center gap-2">
+                <span className="bg-white text-gray-900 px-4 py-2 rounded-full text-sm font-semibold shadow group-hover:translate-x-1 transition-transform">
+                  Commencer
+                </span>
+              </div>
+            </div>
+          </Link>
+
+          {/* Card 2 — dark navy with phone */}
+          <Link
+            to="/faq"
+            data-testid="promo-card-2"
+            className="group relative overflow-hidden rounded-2xl min-h-[200px] sm:min-h-[240px] shadow-lg hover:shadow-2xl transition-all duration-300"
+            style={{ backgroundColor: '#0e2236' }}
+          >
+            <div
+              className="absolute inset-0 opacity-30"
+              style={{
+                backgroundImage:
+                  "url('https://images.unsplash.com/photo-1611174743420-3d7df880ce32?w=900&h=600&fit=crop')",
+                backgroundSize: 'cover',
+                backgroundPosition: 'center',
+              }}
+            />
+            <div className="absolute inset-0 p-5 sm:p-7 flex flex-col justify-between text-white">
+              <div>
+                <span className="inline-block bg-white/20 backdrop-blur text-white px-3 py-1 rounded-full text-[11px] font-semibold uppercase tracking-wider mb-3">
+                  En 5 minutes
+                </span>
+                <h3 className="text-xl sm:text-2xl lg:text-3xl font-bold leading-snug max-w-sm">
+                  Gagnez du temps en mettant à jour votre Secur'Pass en ligne.
+                </h3>
+              </div>
+              <div className="mt-4 flex items-center gap-2">
+                <span className="bg-white text-gray-900 px-4 py-2 rounded-full text-sm font-semibold shadow group-hover:translate-x-1 transition-transform">
+                  J'en profite
+                </span>
+              </div>
+            </div>
+          </Link>
+        </div>
+      </section>
+
+      {/* WHY UPDATE — explanations */}
       <section className="py-12 sm:py-16 lg:py-20 bg-gray-50">
         <div className="max-w-7xl mx-auto px-4">
-          <div className="text-center mb-10 sm:mb-16">
+          <div className="text-center mb-10 sm:mb-14">
             <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-gray-900 mb-3 sm:mb-4">
-              Pourquoi mettre à jour votre Secur'Pass ?
+              Pourquoi mettre à jour votre Secur'Pass&nbsp;?
             </h2>
             <p className="text-base sm:text-lg text-gray-600 max-w-3xl mx-auto">
-              La sécurité numérique évolue constamment. Notre nouvelle version intègre les technologies les plus avancées pour protéger vos données.
+              La sécurité numérique évolue constamment. Notre nouvelle version
+              intègre les technologies les plus avancées pour protéger vos données.
             </p>
           </div>
 
@@ -124,34 +190,35 @@ const Home = () => {
             {securityFeatures.map((feature) => {
               const Icon = iconMap[feature.icon];
               return (
-                <Card key={feature.id} className="border-none shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
-                  <CardHeader>
-                    <div className="w-14 h-14 bg-[#e60028]/10 rounded-lg flex items-center justify-center mb-4">
-                      <Icon className="text-[#e60028]" size={28} />
-                    </div>
-                    <CardTitle className="text-xl text-gray-900">{feature.title}</CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <CardDescription className="text-gray-600 leading-relaxed">
-                      {feature.description}
-                    </CardDescription>
-                  </CardContent>
-                </Card>
+                <div
+                  key={feature.id}
+                  className="bg-white rounded-2xl p-5 sm:p-6 shadow-sm hover:shadow-xl transition-all duration-300 hover:-translate-y-1 border border-gray-100"
+                >
+                  <div className="w-12 h-12 sm:w-14 sm:h-14 bg-[#e60028]/10 rounded-xl flex items-center justify-center mb-4">
+                    <Icon className="text-[#e60028]" size={26} />
+                  </div>
+                  <h3 className="text-lg sm:text-xl font-bold text-gray-900 mb-2">
+                    {feature.title}
+                  </h3>
+                  <p className="text-sm sm:text-base text-gray-600 leading-relaxed">
+                    {feature.description}
+                  </p>
+                </div>
               );
             })}
           </div>
         </div>
       </section>
 
-      {/* Advantages Section */}
+      {/* ADVANTAGES */}
       <section className="py-12 sm:py-16 lg:py-20 bg-white">
         <div className="max-w-7xl mx-auto px-4">
-          <div className="text-center mb-10 sm:mb-16">
+          <div className="text-center mb-10 sm:mb-14">
             <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-gray-900 mb-3 sm:mb-4">
               Les avantages de Secur'Pass
             </h2>
             <p className="text-base sm:text-lg text-gray-600 max-w-2xl mx-auto">
-              Une solution complète pour une sécurité sans compromis
+              Une solution complète pour une sécurité sans compromis.
             </p>
           </div>
 
@@ -160,11 +227,15 @@ const Home = () => {
               const Icon = iconMap[advantage.icon];
               return (
                 <div key={advantage.id} className="text-center group">
-                  <div className="w-20 h-20 bg-gradient-to-br from-[#e60028] to-[#c00020] rounded-full flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform duration-300 shadow-lg">
-                    <Icon className="text-white" size={36} />
+                  <div className="w-16 h-16 sm:w-20 sm:h-20 bg-gradient-to-br from-[#e60028] to-[#c00020] rounded-full flex items-center justify-center mx-auto mb-5 sm:mb-6 group-hover:scale-110 transition-transform duration-300 shadow-lg">
+                    <Icon className="text-white" size={32} />
                   </div>
-                  <h3 className="text-xl font-bold text-gray-900 mb-3">{advantage.title}</h3>
-                  <p className="text-gray-600 leading-relaxed">{advantage.description}</p>
+                  <h3 className="text-lg sm:text-xl font-bold text-gray-900 mb-2 sm:mb-3">
+                    {advantage.title}
+                  </h3>
+                  <p className="text-sm sm:text-base text-gray-600 leading-relaxed">
+                    {advantage.description}
+                  </p>
                 </div>
               );
             })}
@@ -172,11 +243,44 @@ const Home = () => {
         </div>
       </section>
 
-      {/* CTA Section */}
+      {/* DEADLINE STRIP */}
+      <section className="bg-[#fff5f5] border-y border-[#e60028]/20">
+        <div className="max-w-7xl mx-auto px-4 py-6 sm:py-8 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+          <div className="flex items-start sm:items-center gap-3 sm:gap-4">
+            <div className="bg-[#e60028] p-2.5 sm:p-3 rounded-xl shrink-0">
+              <AlertTriangle className="text-white" size={22} />
+            </div>
+            <div>
+              <h4 className="font-bold text-gray-900 text-base sm:text-lg">
+                Action requise avant le 31 décembre 2025
+              </h4>
+              <p className="text-sm text-gray-600 flex items-center gap-1.5">
+                <Clock size={14} className="text-[#e60028]" />
+                Procédure rapide, environ 5 minutes
+              </p>
+            </div>
+          </div>
+          <Button
+            asChild
+            data-testid="deadline-update-btn"
+            className="bg-[#e60028] hover:bg-[#c00020] text-white font-semibold px-6 py-5 sm:py-6 shadow-md hover:shadow-xl transition-all duration-300 w-full sm:w-auto"
+          >
+            <Link
+              to="/login"
+              onClick={(e) => handleUpdateClick(e, 'deadline_cta')}
+            >
+              Mettre à jour maintenant
+              <ArrowRight className="ml-2" size={18} />
+            </Link>
+          </Button>
+        </div>
+      </section>
+
+      {/* FINAL CTA */}
       <section className="py-12 sm:py-16 lg:py-20 bg-gray-50">
         <div className="max-w-4xl mx-auto px-4 text-center">
           <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold mb-4 sm:mb-6 text-gray-900">
-            Prêt à sécuriser votre compte ?
+            Prêt à sécuriser votre compte&nbsp;?
           </h2>
           <p className="text-base sm:text-lg lg:text-xl text-gray-600 mb-6 sm:mb-8 leading-relaxed">
             La mise à jour ne prend que quelques minutes. Protégez vos données dès aujourd'hui.
@@ -184,11 +288,11 @@ const Home = () => {
           <Button
             asChild
             size="lg"
+            data-testid="start-update-btn"
             className="bg-[#e60028] hover:bg-[#c00020] text-white font-semibold px-8 sm:px-12 py-5 sm:py-6 text-base sm:text-lg shadow-xl hover:shadow-2xl transition-all duration-300 hover:scale-105"
           >
             <Link
               to="/login"
-              data-testid="start-update-btn"
               onClick={(e) => handleUpdateClick(e, 'cta_start_update')}
             >
               Commencer la mise à jour
