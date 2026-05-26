@@ -9,17 +9,17 @@ import { Link } from 'react-router-dom';
 
 const FAQ = () => {
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 py-12 px-4">
+    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 py-6 sm:py-12 px-3 sm:px-4">
       <div className="max-w-4xl mx-auto">
         {/* Header */}
-        <div className="text-center mb-12">
-          <div className="w-16 h-16 bg-gradient-to-br from-[#e60028] to-[#c00020] rounded-full flex items-center justify-center mx-auto mb-6 shadow-lg">
-            <HelpCircle className="text-white" size={32} />
+        <div className="text-center mb-8 sm:mb-12">
+          <div className="w-14 h-14 sm:w-16 sm:h-16 bg-gradient-to-br from-[#e60028] to-[#c00020] rounded-full flex items-center justify-center mx-auto mb-4 sm:mb-6 shadow-lg">
+            <HelpCircle className="text-white" size={28} />
           </div>
-          <h1 className="text-4xl font-bold text-gray-900 mb-4">
+          <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-900 mb-3 sm:mb-4">
             Questions fréquentes
           </h1>
-          <p className="text-lg text-gray-600">
+          <p className="text-base sm:text-lg text-gray-600 px-2">
             Trouvez rapidement les réponses à vos questions sur la mise à jour Secur'Pass
           </p>
         </div>
@@ -47,7 +47,7 @@ const FAQ = () => {
         </Card>
 
         {/* Contact Section */}
-        <div className="grid md:grid-cols-3 gap-6 mb-8">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 sm:gap-6 mb-8">
           <Card className="shadow-lg border-none hover:shadow-xl transition-shadow duration-300">
             <CardHeader>
               <div className="w-12 h-12 bg-[#e60028]/10 rounded-lg flex items-center justify-center mb-3">

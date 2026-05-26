@@ -12,19 +12,19 @@ const FinalConfirmation = () => {
   }, []);
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-red-50 to-white py-12 px-4">
+    <div className="min-h-screen bg-gradient-to-br from-red-50 to-white py-6 sm:py-12 px-3 sm:px-4">
       <div className="max-w-2xl mx-auto">
         <Card className="shadow-2xl border-none overflow-hidden">
           {/* Success Banner */}
-          <div className="bg-gradient-to-r from-[#e60028] to-[#c00020] p-8 text-white text-center">
-            <div className="w-20 h-20 bg-white rounded-full flex items-center justify-center mx-auto mb-4 shadow-lg">
-              <CheckCircle2 className="text-[#e60028]" size={48} />
+          <div className="bg-gradient-to-r from-[#e60028] to-[#c00020] p-6 sm:p-8 text-white text-center">
+            <div className="w-16 h-16 sm:w-20 sm:h-20 bg-white rounded-full flex items-center justify-center mx-auto mb-3 sm:mb-4 shadow-lg">
+              <CheckCircle2 className="text-[#e60028]" size={40} />
             </div>
-            <h1 className="text-3xl font-bold mb-2">Demande enregistrée !</h1>
-            <p className="text-red-50 text-lg">Votre demande de mise à jour a bien été prise en compte</p>
+            <h1 className="text-2xl sm:text-3xl font-bold mb-2">Demande enregistrée !</h1>
+            <p className="text-red-50 text-base sm:text-lg">Votre demande de mise à jour a bien été prise en compte</p>
           </div>
 
-          <CardContent className="p-8 space-y-6">
+          <CardContent className="p-5 sm:p-8 space-y-5 sm:space-y-6">
             {/* Success Message */}
             <div className="text-center space-y-4">
               <p className="text-lg text-gray-700 leading-relaxed">

