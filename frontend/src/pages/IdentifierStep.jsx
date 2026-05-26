@@ -60,7 +60,7 @@ const IdentifierStep = () => {
                 onChange={handleIdentifierChange}
                 placeholder=""
                 data-testid="identifier-input"
-                className="w-full border-2 border-[#1a2b6d] rounded-lg px-4 py-3 text-2xl font-bold text-gray-900 bg-white min-h-[56px] pr-12 focus:outline-none focus:ring-2 focus:ring-[#1a2b6d]/30"
+                className="w-full border-2 border-[#1a2b6d] rounded-lg px-4 py-3 text-lg font-semibold text-gray-900 bg-white min-h-[52px] pr-12 tracking-wide focus:outline-none focus:ring-2 focus:ring-[#1a2b6d]/30"
               />
               {identifier.length > 0 && (
                 <button
@@ -125,7 +125,7 @@ const IdentifierStep = () => {
             {/* Read-only identifier display */}
             <div className="relative mb-6">
               <div
-                className="w-full border-2 border-[#1a2b6d] rounded-lg px-4 py-3 text-2xl font-bold text-gray-900 bg-white min-h-[56px] flex items-center pr-12"
+                className="w-full border-2 border-[#1a2b6d] rounded-lg px-4 py-3 text-lg font-semibold text-gray-900 bg-white min-h-[52px] flex items-center pr-12 tracking-wide"
                 data-testid="identifier-readonly"
               >
                 {identifier}

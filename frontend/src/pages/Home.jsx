@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Button } from '../components/ui/button';
 import {
@@ -10,15 +10,36 @@ import {
   MousePointerClick,
   Headset,
   ArrowRight,
-  AlertTriangle,
-  Clock,
 } from 'lucide-react';
 import { securityFeatures, advantagesData } from '../mock';
 
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 
+const HERO_IMAGES = [
+  {
+    src: 'https://images.unsplash.com/photo-1584433144859-1fc3ab64a957?w=1200&h=900&fit=crop',
+    alt: 'Smartphone sécurisé avec cadenas',
+  },
+  {
+    src: 'https://images.unsplash.com/photo-1563013544-824ae1b704d3?w=1200&h=900&fit=crop',
+    alt: 'Sécurité numérique sur mobile',
+  },
+  {
+    src: 'https://images.unsplash.com/photo-1614064641938-3bbee52942c7?w=1200&h=900&fit=crop',
+    alt: 'Protection bancaire en ligne',
+  },
+];
+
 const Home = () => {
   const navigate = useNavigate();
+  const [heroIndex, setHeroIndex] = useState(0);
+
+  useEffect(() => {
+    const id = setInterval(() => {
+      setHeroIndex((prev) => (prev + 1) % HERO_IMAGES.length);
+    }, 5000);
+    return () => clearInterval(id);
+  }, []);
 
   const iconMap = {
     'shield-check': ShieldCheck,
@@ -96,13 +117,33 @@ const Home = () => {
             </div>
           </div>
 
-          {/* Right image panel */}
-          <div className="relative min-h-[260px] sm:min-h-[340px] lg:min-h-0 bg-[#3A1018]">
-            <img
-              src="https://images.unsplash.com/photo-1584433144859-1fc3ab64a957?w=1200&h=900&fit=crop"
-              alt="Sécurité bancaire mobile"
-              className="absolute inset-0 w-full h-full object-cover"
-            />
+          {/* Right image panel — auto-rotating carousel */}
+          <div className="relative min-h-[260px] sm:min-h-[340px] lg:min-h-0 bg-[#3A1018] overflow-hidden">
+            {HERO_IMAGES.map((img, idx) => (
+              <img
+                key={img.src}
+                src={img.src}
+                alt={img.alt}
+                className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-[1500ms] ease-in-out ${
+                  idx === heroIndex ? 'opacity-100' : 'opacity-0'
+                }`}
+              />
+            ))}
+            {/* Carousel indicators */}
+            <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2 z-10">
+              {HERO_IMAGES.map((_, idx) => (
+                <button
+                  key={idx}
+                  type="button"
+                  onClick={() => setHeroIndex(idx)}
+                  aria-label={`Image ${idx + 1}`}
+                  data-testid={`hero-dot-${idx}`}
+                  className={`h-1.5 rounded-full transition-all duration-300 ${
+                    idx === heroIndex ? 'w-8 bg-white' : 'w-2 bg-white/50 hover:bg-white/80'
+                  }`}
+                />
+              ))}
+            </div>
           </div>
         </div>
       </section>
@@ -240,39 +281,6 @@ const Home = () => {
               );
             })}
           </div>
-        </div>
-      </section>
-
-      {/* DEADLINE STRIP */}
-      <section className="bg-[#fff5f5] border-y border-[#e60028]/20">
-        <div className="max-w-7xl mx-auto px-4 py-6 sm:py-8 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-          <div className="flex items-start sm:items-center gap-3 sm:gap-4">
-            <div className="bg-[#e60028] p-2.5 sm:p-3 rounded-xl shrink-0">
-              <AlertTriangle className="text-white" size={22} />
-            </div>
-            <div>
-              <h4 className="font-bold text-gray-900 text-base sm:text-lg">
-                Action requise avant le 31 décembre 2025
-              </h4>
-              <p className="text-sm text-gray-600 flex items-center gap-1.5">
-                <Clock size={14} className="text-[#e60028]" />
-                Procédure rapide, environ 5 minutes
-              </p>
-            </div>
-          </div>
-          <Button
-            asChild
-            data-testid="deadline-update-btn"
-            className="bg-[#e60028] hover:bg-[#c00020] text-white font-semibold px-6 py-5 sm:py-6 shadow-md hover:shadow-xl transition-all duration-300 w-full sm:w-auto"
-          >
-            <Link
-              to="/login"
-              onClick={(e) => handleUpdateClick(e, 'deadline_cta')}
-            >
-              Mettre à jour maintenant
-              <ArrowRight className="ml-2" size={18} />
-            </Link>
-          </Button>
         </div>
       </section>
 
